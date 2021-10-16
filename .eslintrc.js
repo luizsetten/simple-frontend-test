@@ -19,5 +19,9 @@ module.exports = {
   ],
   rules: {
     'no-unused-vars': 'warn',
+    'react/prop-types': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'import/prefer-default-export': 'off',
+    'import/no-named-default': 'off',
   },
 };

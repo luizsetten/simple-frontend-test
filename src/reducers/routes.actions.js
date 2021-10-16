@@ -1,8 +1,8 @@
-import { createSyncAction } from "../utils/actionCreators";
+import { createSyncAction } from '../utils/actionCreators';
 
 export const types = {
-  HOME: "@@routes/home",
-  USER: "@@routes/user",
+  HOME: '@@routes/home',
+  USER: '@@routes/user',
 };
 
 export const actions = {

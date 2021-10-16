@@ -1,8 +1,8 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { connectRoutes, NOT_FOUND } from "redux-first-router";
-import * as Pages from "./business/pages";
-import { types as routes } from "./reducers/routes.actions";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { connectRoutes, NOT_FOUND } from 'redux-first-router';
+import * as Pages from './business/pages';
+import { types as routes } from './reducers/routes.actions';
 
 const routePages = {
   [routes.HOME]: Pages.HomePage,
@@ -12,8 +12,8 @@ const routePages = {
 };
 
 const routePaths = {
-  [routes.HOME]: "/",
-  [routes.USER]: "/user/:id",
+  [routes.HOME]: '/',
+  [routes.USER]: '/user/:id',
 };
 
 const { reducer, middleware, enhancer } = connectRoutes(routePaths, {

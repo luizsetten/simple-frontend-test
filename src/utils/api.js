@@ -1,6 +1,6 @@
-import { mock } from "./mock";
+import { mock } from './mock';
 
-const axios = require("axios");
+const axios = require('axios');
 
 const instance = axios.create({
   timeout: 120000,
@@ -18,11 +18,10 @@ export const request = async ({
   ...other
 }) => {
   Object.keys(queryParams).forEach(
-    (key) =>
-      queryParams.hasOwnProperty(key) &&
-      !queryParams[key] &&
-      queryParams[key] !== false &&
-      delete queryParams[key]
+    (key) => queryParams.hasOwnProperty(key)
+      && !queryParams[key]
+      && queryParams[key] !== false
+      && delete queryParams[key],
   );
 
   if (isMock) {
@@ -34,16 +33,15 @@ export const request = async ({
       headers,
     });
     return mock(other.mockResult);
-  } else {
-    return instance.request({
-      url,
-      method,
-      headers,
-      ...other,
-      params: queryParams,
-      data: body,
-    });
   }
+  return instance.request({
+    url,
+    method,
+    headers,
+    ...other,
+    params: queryParams,
+    data: body,
+  });
 };
 
 export default instance;

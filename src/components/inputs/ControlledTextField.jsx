@@ -1,14 +1,16 @@
-import React from "react";
-import { TextField as MTextField } from "@material-ui/core";
+import React from 'react';
+import { TextField as MTextField } from '@material-ui/core';
 
-import { Controller } from "react-hook-form";
+import { Controller } from 'react-hook-form';
 
 const ControlledTextField = ({
   formProps,
   name,
   ...otherProps
 }) => {
-  const { control, errors, rules, initialValues } = formProps;
+  const {
+    control, errors, rules, initialValues,
+  } = formProps;
   const isError = errors[name] !== undefined;
 
   return (
@@ -25,11 +27,11 @@ const ControlledTextField = ({
           helperText={errors[name]?.message}
           onChange={(v) => {
             onChange(v);
-            !!otherProps.onChange && otherProps.onChange(v);
+            if (otherProps.onChange) otherProps.onChange(v);
           }}
           onBlur={() => {
             onBlur();
-            !!otherProps.onBlur && otherProps.onBlur(value);
+            if (otherProps.onBlur) otherProps.onBlur(value);
           }}
         />
       )}

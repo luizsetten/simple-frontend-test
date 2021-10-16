@@ -47,7 +47,6 @@ const HomePage = () => {
                 </td>
                 <td>
                   {age}
-                  {' '}
                   ano
                   {age > 1 ? 's' : ''}
                 </td>

@@ -1,5 +1,5 @@
-import { createAsyncAction } from "../utils/actionCreators";
+import { createAsyncAction } from '../utils/actionCreators';
 
 export const actions = {
-  loadUsers: createAsyncAction("@users/LOAD"),
+  loadUsers: createAsyncAction('@users/LOAD'),
 };

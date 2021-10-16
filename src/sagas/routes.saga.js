@@ -1,4 +1,4 @@
-import { select, spawn, takeEvery } from "redux-saga/effects";
+import { select, spawn, takeEvery } from 'redux-saga/effects';
 
 export function* routeWatcher(route, worker) {
   const initialRoute = yield select((state) => state.location.type);

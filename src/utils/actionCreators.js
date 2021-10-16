@@ -1,11 +1,11 @@
-const status = ["REQUEST", "SUCCESS", "FAILURE"];
+const status = ['REQUEST', 'SUCCESS', 'FAILURE'];
 
 export const createAsyncAction = (name, payloadCreator = (p) => p) => {
   const actionMethods = {};
 
   status.forEach((s) => {
-    let a = `${name}_${s}`;
-    let subAction = (payload) => ({
+    const a = `${name}_${s}`;
+    const subAction = (payload) => ({
       type: a,
       payload: payloadCreator(payload),
     });
@@ -19,10 +19,8 @@ export const createAsyncAction = (name, payloadCreator = (p) => p) => {
   return actionMethods;
 };
 
-export const createSyncAction = (type, payload, other = {}) => {
-  return {
-    type,
-    payload,
-    ...other,
-  };
-};
+export const createSyncAction = (type, payload, other = {}) => ({
+  type,
+  payload,
+  ...other,
+});
