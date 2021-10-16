@@ -7,6 +7,7 @@ import {
   actions as routeActions,
   types as routes,
 } from '../reducers/routes.actions';
+import { actions } from '../reducers/user.actions';
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -47,6 +48,7 @@ const HomePage = () => {
                 </td>
                 <td>
                   {age}
+                  {' '}
                   ano
                   {age > 1 ? 's' : ''}
                 </td>
@@ -56,7 +58,7 @@ const HomePage = () => {
                       routeActions.redirectTo(routes.USER, { id: u.id }),
                     )}
                   />
-                  <DeleteOutline />
+                  <DeleteOutline onClick={() => dispatch(actions.deleteUser.request(u))} />
                 </td>
               </tr>
             );
