@@ -23,5 +23,10 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     'import/prefer-default-export': 'off',
     'import/no-named-default': 'off',
+    'react/jsx-filename-extension': 'off',
+    // disable later
+    'require-yield': 'warn',
+    'no-param-reassign': 'off',
+    'no-prototype-builtins': 'off',
   },
 };

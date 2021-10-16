@@ -9,7 +9,7 @@ import {
   actions as routeActions,
   types as routes,
 } from '../reducers/routes.actions';
-import { ControlledTextField } from '../components/inputs';
+import { ControlledTextField, ZipCodeTextField } from '../components/inputs';
 
 const UserPage = () => {
   const dispatch = useDispatch();
@@ -45,7 +45,14 @@ const UserPage = () => {
 
       <form onSubmit={formProps.handleSubmit(handleSubmit)}>
         <ControlledTextField label="Nome" name="nome" formProps={formProps} />
-        <ControlledTextField label="CEP" name="cep" formProps={formProps} />
+        <ControlledTextField
+          label="CEP"
+          name="cep"
+          InputProps={{
+            inputComponent: ZipCodeTextField,
+          }}
+          formProps={formProps}
+        />
         <ControlledTextField
           label="Cidade"
           name="cidade"
