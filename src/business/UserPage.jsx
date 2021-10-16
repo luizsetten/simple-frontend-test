@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Edit, DeleteOutline } from '@material-ui/icons';
@@ -10,6 +10,7 @@ import {
   types as routes,
 } from '../reducers/routes.actions';
 import { ControlledTextField, ZipCodeTextField } from '../components/inputs';
+import { request } from '../utils/api';
 
 const UserPage = () => {
   const dispatch = useDispatch();
@@ -23,11 +24,45 @@ const UserPage = () => {
     uf: '',
     ...data,
   };
+
+  const {
+    getValues, watch, setValue, ...rest
+  } = useForm();
+
   const formProps = {
-    ...useForm(),
+    ...rest,
     rules,
     initialValues,
   };
+
+  const cep = watch('cep');
+
+  const loadAddress = async (cepClean) => {
+    try {
+      const { data: requestData } = await request({
+        url: `https://viacep.com.br/ws/${cepClean}/json/`,
+        method: 'GET',
+      });
+
+      if (requestData.localidade) setValue('cidade', requestData.localidade);
+      if (requestData.uf) setValue('uf', requestData.uf);
+
+      if (requestData.erro) {
+        return;
+      }
+    } catch {
+      console.log('CEP inválido');
+    }
+  };
+
+  useEffect(() => {
+    const cleanCep = String(cep).replace('-', '');
+    if (cleanCep.length === 8) {
+      loadAddress(cleanCep);
+      console.log('Receber endereço');
+    }
+  }, [cep]);
+
   const handleSubmit = (values) => {
     dispatch(actions.saveUser.request(values));
   };

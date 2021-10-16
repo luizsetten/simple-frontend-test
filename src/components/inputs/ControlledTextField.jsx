@@ -11,6 +11,7 @@ const ControlledTextField = ({
   const {
     control, errors, rules, initialValues,
   } = formProps;
+
   const isError = errors[name] !== undefined;
 
   return (
@@ -29,8 +30,9 @@ const ControlledTextField = ({
             onChange(v);
             if (otherProps.onChange) otherProps.onChange(v);
           }}
-          onBlur={() => {
+          onBlur={async () => {
             onBlur();
+
             if (otherProps.onBlur) otherProps.onBlur(value);
           }}
         />
