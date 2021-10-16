@@ -1,14 +1,24 @@
+import { useMemo } from "react";
+import { differenceInYears } from 'date-fns';
 import { useDispatch, useSelector } from "react-redux";
+import { Edit, DeleteOutline } from "@material-ui/icons";
+
 import {
   actions as routeActions,
   types as routes,
 } from "../reducers/routes.actions";
 
-import { Edit, DeleteOutline } from "@material-ui/icons";
 
 const HomePage = () => {
   const dispatch = useDispatch();
   const { loading, data } = useSelector((state) => state.home);
+
+  const orderedData = useMemo(() => {
+    return data.sort((a, b) => {
+      const today = new Date();
+      return differenceInYears(today, a.dataNascimento) - differenceInYears(today, b.dataNascimento);
+    })
+  }, [data]);
 
   if (loading) {
     return <div>Carregando usuários</div>;
@@ -22,18 +32,20 @@ const HomePage = () => {
           <tr>
             <td>Nome</td>
             <td>Cidade/UF</td>
+            <td>Idade</td>
             <td>Ações</td>
           </tr>
         </thead>
 
         <tbody>
-          {data.map((u) => {
+          {orderedData.map((u) => {
             return (
               <tr key={u.id}>
                 <td>{u.nome}</td>
                 <td>
                   {u.cidade}/{u.uf}
                 </td>
+                <td>{differenceInYears(new Date(), u.dataNascimento)}</td>
                 <td>
                   <Edit
                     onClick={() =>
