@@ -7,6 +7,8 @@ const instance = axios.create({
   withCredentials: false,
 });
 
+instance.defaults.baseURL = 'http://localhost:6660/';
+
 export const request = async ({
   isMock,
   url,
@@ -24,16 +26,16 @@ export const request = async ({
       && delete queryParams[key],
   );
 
-  if (isMock) {
-    console.log({
-      url,
-      method,
-      queryParams,
-      body,
-      headers,
-    });
-    return mock(other.mockResult);
-  }
+  // if (isMock) {
+  //   console.log({
+  //     url,
+  //     method,
+  //     queryParams,
+  //     body,
+  //     headers,
+  //   });
+  //   return mock(other.mockResult);
+  // }
   return instance.request({
     url,
     method,

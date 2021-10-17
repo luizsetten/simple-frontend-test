@@ -15,7 +15,7 @@ function* homeRouteWatcher() {
 const loadUsers = asyncFlow({
   actionGenerator: actions.loadUsers,
   api: () => request({
-    url: '/usuarios',
+    url: 'person',
     method: 'get',
     isMock: true,
     mockResult: usersMock,

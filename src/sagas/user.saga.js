@@ -22,7 +22,7 @@ const loadUser = asyncFlow({
     return { id };
   },
   api: (values) => request({
-    url: `/usuario/${values.id}`,
+    url: `/person/${values.id}`,
     method: 'get',
     isMock: true,
     mockResult: usersMock.find((u) => u.id === values.id) ?? null,
@@ -39,7 +39,7 @@ const deleteUser = asyncFlow({
     return { id, ...payload };
   },
   api: ({ id, ...values }) => request({
-    url: `/usuario/${id}`,
+    url: `/person/${id}`,
     method: 'delete',
     body: values,
     isMock: true,
@@ -57,7 +57,7 @@ const saveUser = asyncFlow({
     return { id, ...payload };
   },
   api: ({ id, ...values }) => request({
-    url: `/usuario/${id}`,
+    url: `/person/${id}`,
     method: 'put',
     body: values,
     isMock: true,
