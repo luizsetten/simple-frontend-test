@@ -2,6 +2,9 @@ import React, { useMemo } from 'react';
 import { differenceInYears } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
 import { Edit, DeleteOutline } from '@material-ui/icons';
+import {
+  Table, TableHead, TableBody, CircularProgress,
+} from '@material-ui/core';
 
 import {
   actions as routeActions,
@@ -19,23 +22,29 @@ const HomePage = () => {
   }), [data]);
 
   if (loading) {
-    return <div>Carregando usuários</div>;
+    return (
+      <div>
+        Carregando usuários
+        {' '}
+        <CircularProgress />
+      </div>
+    );
   }
 
   return (
     <>
       <h2>Usuários</h2>
-      <table>
-        <thead>
+      <Table>
+        <TableHead>
           <tr>
             <td>Nome</td>
             <td>Cidade/UF</td>
             <td>Idade</td>
             <td>Ações</td>
           </tr>
-        </thead>
+        </TableHead>
 
-        <tbody>
+        <TableBody>
           {orderedData.map((u) => {
             const age = differenceInYears(new Date(), u.dataNascimento);
             return (
@@ -57,14 +66,15 @@ const HomePage = () => {
                     onClick={() => dispatch(
                       routeActions.redirectTo(routes.USER, { id: u.id }),
                     )}
+                    className="edit"
                   />
-                  <DeleteOutline onClick={() => dispatch(actions.deleteUser.request(u))} />
+                  <DeleteOutline onClick={() => dispatch(actions.deleteUser.request(u))} className="delete" />
                 </td>
               </tr>
             );
           })}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </>
   );
 };

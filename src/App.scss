@@ -1,0 +1,37 @@
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background-color: #ffff;
+  color: #151515;
+}
+
+svg {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.delete {
+  color: #a63d40;
+}
+
+.edit {
+  color: #e9b872;
+}
+
+.save {
+  background-color: #90a959;
+  color: #fff;
+
+  &:hover {
+    background-color: #758a48;
+  }
+}
+
+thead {
+  background-color: #5972a9;
+  color: #fff;
+  font-weight: bold;
+}

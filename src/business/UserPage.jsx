@@ -1,14 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Edit, DeleteOutline } from '@material-ui/icons';
+import { Save } from '@material-ui/icons';
 import { useForm } from 'react-hook-form';
-import { Button } from '@material-ui/core';
+import { Button, CircularProgress } from '@material-ui/core';
 import { actions } from '../reducers/user.actions';
-import {
-  actions as routeActions,
-  types as routes,
-} from '../reducers/routes.actions';
 import { ControlledTextField, ZipCodeTextField } from '../components/inputs';
 import { request } from '../utils/api';
 
@@ -59,7 +55,6 @@ const UserPage = () => {
     const cleanCep = String(cep).replace('-', '');
     if (cleanCep.length === 8) {
       loadAddress(cleanCep);
-      console.log('Receber endereço');
     }
   }, [cep]);
 
@@ -68,7 +63,13 @@ const UserPage = () => {
   };
 
   if (loading) {
-    return <div>Carregando usuário</div>;
+    return (
+      <div>
+        Carregando usuário
+        {' '}
+        <CircularProgress />
+      </div>
+    );
   }
 
   return (
@@ -94,7 +95,9 @@ const UserPage = () => {
           formProps={formProps}
         />
         <ControlledTextField label="UF" name="uf" formProps={formProps} />
-        <Button type="submit">GRAVAR</Button>
+        <Button type="submit" onClick={() => dispatch(actions.saveUser.request(getValues()))} className="save">
+          <Save />
+        </Button>
       </form>
     </>
   );
