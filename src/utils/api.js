@@ -26,16 +26,16 @@ export const request = async ({
       && delete queryParams[key],
   );
 
-  // if (isMock) {
-  //   console.log({
-  //     url,
-  //     method,
-  //     queryParams,
-  //     body,
-  //     headers,
-  //   });
-  //   return mock(other.mockResult);
-  // }
+  if (isMock) {
+    console.log({
+      url,
+      method,
+      queryParams,
+      body,
+      headers,
+    });
+    return mock(other.mockResult);
+  }
   return instance.request({
     url,
     method,

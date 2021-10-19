@@ -24,8 +24,6 @@ const loadUser = asyncFlow({
   api: (values) => request({
     url: `/person/${values.id}`,
     method: 'get',
-    isMock: true,
-    mockResult: usersMock.find((u) => u.id === values.id) ?? null,
   }),
   * postSuccess({ response }) {
     console.log({ user: response.data });
@@ -42,8 +40,6 @@ const deleteUser = asyncFlow({
     url: `/person/${id}`,
     method: 'delete',
     body: values,
-    isMock: true,
-    mockResult: {},
   }),
   * postSuccess() {
     yield put(routeActions.redirectTo(routes.HOME));
@@ -60,8 +56,6 @@ const saveUser = asyncFlow({
     url: `/person/${id}`,
     method: 'put',
     body: values,
-    isMock: true,
-    mockResult: {},
   }),
   * postSuccess() {
     yield put(routeActions.redirectTo(routes.HOME));

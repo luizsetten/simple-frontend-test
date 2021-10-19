@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Save } from '@material-ui/icons';
 import { useForm } from 'react-hook-form';
-import { Button, CircularProgress } from '@material-ui/core';
+import {
+  Box,
+  Button, CircularProgress, Container, Grid, Paper, Typography,
+} from '@material-ui/core';
 import { actions } from '../reducers/user.actions';
 import { ControlledTextField, ZipCodeTextField } from '../components/inputs';
 import { request } from '../utils/api';
@@ -74,31 +77,50 @@ const UserPage = () => {
 
   return (
     <>
-      <h2>
-        Usuário #
-        {id}
-      </h2>
+      <Box my={4}>
+        <Typography variant="h4" align="center" mx="4">
+          Usuário #
+          {id}
+        </Typography>
+      </Box>
 
-      <form onSubmit={formProps.handleSubmit(handleSubmit)}>
-        <ControlledTextField label="Nome" name="nome" formProps={formProps} />
-        <ControlledTextField
-          label="CEP"
-          name="cep"
-          InputProps={{
-            inputComponent: ZipCodeTextField,
-          }}
-          formProps={formProps}
-        />
-        <ControlledTextField
-          label="Cidade"
-          name="cidade"
-          formProps={formProps}
-        />
-        <ControlledTextField label="UF" name="uf" formProps={formProps} />
-        <Button type="submit" onClick={() => dispatch(actions.saveUser.request(getValues()))} className="save">
-          <Save />
-        </Button>
-      </form>
+      <Container component={Paper}>
+        <form onSubmit={formProps.handleSubmit(handleSubmit)}>
+          <Grid container spacing={2}>
+            <Grid align="center" item xs={12} sm={3}>
+              <ControlledTextField label="Nome" name="nome" formProps={formProps} />
+            </Grid>
+            <Grid align="center" item xs={12} sm={3}>
+              <ControlledTextField
+                label="CEP"
+                name="cep"
+                InputProps={{
+                  inputComponent: ZipCodeTextField,
+                }}
+                formProps={formProps}
+              />
+            </Grid>
+            <Grid align="center" item xs={12} sm={3}>
+              <ControlledTextField
+                label="Cidade"
+                name="cidade"
+                formProps={formProps}
+              />
+            </Grid>
+
+            <Grid align="center" item xs={12} sm={1}>
+              <ControlledTextField label="UF" name="uf" formProps={formProps} />
+            </Grid>
+
+            <Grid align="center" item xs={12} sm={1} style={{ margin: 'auto 0' }}>
+              <Button type="submit" onClick={() => dispatch(actions.saveUser.request(getValues()))} className="save">
+                <Save />
+                Salvar
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+      </Container>
     </>
   );
 };

@@ -3,7 +3,16 @@ import { differenceInYears } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
 import { Edit, DeleteOutline } from '@material-ui/icons';
 import {
-  Table, TableHead, TableBody, CircularProgress,
+  Table,
+  TableHead,
+  TableBody,
+  CircularProgress,
+  TableRow,
+  TableCell,
+  TableContainer,
+  Paper,
+  Typography,
+  Box,
 } from '@material-ui/core';
 
 import {
@@ -33,48 +42,52 @@ const HomePage = () => {
 
   return (
     <>
-      <h2>Usuários</h2>
-      <Table>
-        <TableHead>
-          <tr>
-            <td>Nome</td>
-            <td>Cidade/UF</td>
-            <td>Idade</td>
-            <td>Ações</td>
-          </tr>
-        </TableHead>
+      <Box my={4}>
+        <Typography variant="h4" align="center">Usuários</Typography>
+      </Box>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Nome</TableCell>
+              <TableCell>Cidade/UF</TableCell>
+              <TableCell>Idade</TableCell>
+              <TableCell>Ações</TableCell>
+            </TableRow>
+          </TableHead>
 
-        <TableBody>
-          {orderedData.map((u) => {
-            const age = differenceInYears(new Date(), u.dataNascimento);
-            return (
-              <tr key={u.id}>
-                <td>{u.nome}</td>
-                <td>
-                  {u.cidade}
-                  /
-                  {u.uf}
-                </td>
-                <td>
-                  {age}
-                  {' '}
-                  ano
-                  {age > 1 ? 's' : ''}
-                </td>
-                <td>
-                  <Edit
-                    onClick={() => dispatch(
-                      routeActions.redirectTo(routes.USER, { id: u.id }),
-                    )}
-                    className="edit"
-                  />
-                  <DeleteOutline onClick={() => dispatch(actions.deleteUser.request(u))} className="delete" />
-                </td>
-              </tr>
-            );
-          })}
-        </TableBody>
-      </Table>
+          <TableBody>
+            {orderedData.map((u) => {
+              const age = differenceInYears(new Date(), u.dataNascimento);
+              return (
+                <TableRow key={u.id}>
+                  <TableCell>{u.nome}</TableCell>
+                  <TableCell>
+                    {u.cidade}
+                    /
+                    {u.uf}
+                  </TableCell>
+                  <TableCell>
+                    {age}
+                    {' '}
+                    ano
+                    {age > 1 ? 's' : ''}
+                  </TableCell>
+                  <TableCell>
+                    <Edit
+                      onClick={() => dispatch(
+                        routeActions.redirectTo(routes.USER, { id: u.id }),
+                      )}
+                      className="edit"
+                    />
+                    <DeleteOutline onClick={() => dispatch(actions.deleteUser.request(u))} className="delete" />
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 };
