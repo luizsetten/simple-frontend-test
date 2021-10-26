@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { differenceInYears } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
-import { Edit, DeleteOutline } from '@material-ui/icons';
+import { Edit, DeleteOutline, People } from '@material-ui/icons';
 import {
   Table,
   TableHead,
@@ -13,6 +13,9 @@ import {
   Paper,
   Typography,
   Box,
+  Button,
+  Container,
+  Grid,
 } from '@material-ui/core';
 
 import {
@@ -20,9 +23,11 @@ import {
   types as routes,
 } from '../reducers/routes.actions';
 import { actions } from '../reducers/user.actions';
+import { DeleteUserDialog } from '../components/DeleteUserDialog';
 
 const HomePage = () => {
   const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
   const { loading, data } = useSelector((state) => state.home);
 
   const orderedData = useMemo(() => data.sort((a, b) => {
@@ -39,6 +44,10 @@ const HomePage = () => {
       </div>
     );
   }
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
   return (
     <>
@@ -58,7 +67,7 @@ const HomePage = () => {
 
           <TableBody>
             {orderedData.map((u) => {
-              const age = differenceInYears(new Date(), u.dataNascimento);
+              const age = differenceInYears(new Date(), new Date(u.dataNascimento));
               return (
                 <TableRow key={u.id}>
                   <TableCell>{u.nome}</TableCell>
@@ -80,7 +89,12 @@ const HomePage = () => {
                       )}
                       className="edit"
                     />
-                    <DeleteOutline onClick={() => dispatch(actions.deleteUser.request(u))} className="delete" />
+                    <DeleteOutline onClick={handleClickOpen} className="delete" />
+                    <DeleteUserDialog
+                      handleDelete={() => dispatch(actions.deleteUser.request(u))}
+                      open={open}
+                      setOpen={setOpen}
+                    />
                   </TableCell>
                 </TableRow>
               );
@@ -88,6 +102,19 @@ const HomePage = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <Grid justifyContent="center" container style={{ marginTop: '3rem' }}>
+        <Button
+          type="button"
+          onClick={() => dispatch(
+            routeActions.redirectTo(routes.USER, { id: -1 }),
+          )}
+          className="save"
+        >
+          <People />
+          Criar novo usuário
+        </Button>
+      </Grid>
     </>
   );
 };

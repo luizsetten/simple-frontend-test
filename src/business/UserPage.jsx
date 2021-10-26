@@ -1,23 +1,46 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { Save } from '@material-ui/icons';
-import { useForm } from 'react-hook-form';
 import {
   Box,
-  Button, CircularProgress, Container, Grid, Paper, Typography,
+  Button,
+  CircularProgress,
+  Container,
+  Grid,
+  Paper,
+  Typography,
 } from '@material-ui/core';
+import { Save } from '@material-ui/icons';
+import { Controller, useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { KeyboardDatePicker } from '@material-ui/pickers';
+
 import { actions } from '../reducers/user.actions';
 import { ControlledTextField, ZipCodeTextField } from '../components/inputs';
-import { request } from '../utils/api';
+import { loadAddress } from '../utils/loadAddress';
 
 const UserPage = () => {
   const dispatch = useDispatch();
+
   const { loading, data, id } = useSelector((state) => state.user);
-  const rules = {};
+  const rules = {
+    dataNascimento: {
+      required: true,
+    },
+    nome: {
+      required: true,
+    },
+    cidade: {
+      required: true,
+    },
+    uf: {
+      required: true,
+    },
+    cep: {
+      required: true,
+    },
+  };
   const initialValues = {
     nome: '',
-    dataNascimento: '',
+    dataNascimento: new Date(),
     cep: '',
     cidade: '',
     uf: '',
@@ -25,7 +48,7 @@ const UserPage = () => {
   };
 
   const {
-    getValues, watch, setValue, ...rest
+    getValues, watch, setValue, handleSubmit, ...rest
   } = useForm();
 
   const formProps = {
@@ -36,32 +59,14 @@ const UserPage = () => {
 
   const cep = watch('cep');
 
-  const loadAddress = async (cepClean) => {
-    try {
-      const { data: requestData } = await request({
-        url: `https://viacep.com.br/ws/${cepClean}/json/`,
-        method: 'GET',
-      });
-
-      if (requestData.localidade) setValue('cidade', requestData.localidade);
-      if (requestData.uf) setValue('uf', requestData.uf);
-
-      if (requestData.erro) {
-        return;
-      }
-    } catch {
-      console.log('CEP inválido');
-    }
-  };
-
   useEffect(() => {
     const cleanCep = String(cep).replace('-', '');
     if (cleanCep.length === 8) {
-      loadAddress(cleanCep);
+      loadAddress(cleanCep, setValue);
     }
   }, [cep]);
 
-  const handleSubmit = (values) => {
+  const onSubmit = (values) => {
     dispatch(actions.saveUser.request(values));
   };
 
@@ -75,23 +80,27 @@ const UserPage = () => {
     );
   }
 
+  const onError = (e) => {
+    console.log('Error', e);
+  };
+
   return (
     <>
       <Box my={4}>
         <Typography variant="h4" align="center" mx="4">
-          Usuário #
-          {id}
+          {id === -1 ? 'Novo usuário' : `Usuário #${id}`}
         </Typography>
       </Box>
 
       <Container component={Paper}>
-        <form onSubmit={formProps.handleSubmit(handleSubmit)}>
-          <Grid container spacing={2}>
-            <Grid align="center" item xs={12} sm={3}>
-              <ControlledTextField label="Nome" name="nome" formProps={formProps} />
+        <form onSubmit={handleSubmit(onSubmit, onError)}>
+          <Grid container spacing={2} justifyContent="space-between">
+            <Grid align="center" item xs={12} sm={3} md={2}>
+              <ControlledTextField label="Nome" name="nome" formProps={formProps} fullWidth />
             </Grid>
-            <Grid align="center" item xs={12} sm={3}>
+            <Grid align="center" item xs={12} sm={3} md={2}>
               <ControlledTextField
+                fullWidth
                 label="CEP"
                 name="cep"
                 InputProps={{
@@ -100,20 +109,44 @@ const UserPage = () => {
                 formProps={formProps}
               />
             </Grid>
-            <Grid align="center" item xs={12} sm={3}>
+            <Grid align="center" item xs={12} sm={3} md={2}>
               <ControlledTextField
                 label="Cidade"
                 name="cidade"
                 formProps={formProps}
+                fullWidth
               />
             </Grid>
 
-            <Grid align="center" item xs={12} sm={1}>
-              <ControlledTextField label="UF" name="uf" formProps={formProps} />
+            <Grid align="center" item xs={12} sm={2} md={1}>
+              <ControlledTextField label="UF" name="uf" formProps={formProps} fullWidth />
             </Grid>
 
-            <Grid align="center" item xs={12} sm={1} style={{ margin: 'auto 0' }}>
-              <Button type="submit" onClick={() => dispatch(actions.saveUser.request(getValues()))} className="save">
+            <Grid align="center" item xs={12} sm={3} md={2}>
+              <Controller
+                name="dataNascimento"
+                defaultValue={formProps.initialValues.dataNascimento}
+                control={formProps.control}
+                rules={rules.dataNascimento}
+                render={({ onChange, value }) => (
+                  <KeyboardDatePicker
+                    clearable
+                    onChange={onChange}
+                    value={value}
+                    variant="inline"
+                    label="Data Nascimento"
+                    placeholder="Selecione a data"
+                    maxDate={new Date()}
+                    fullWidth
+                    format="dd/MM/yyyy"
+                    error={formProps.errors.dataNascimento}
+                  />
+                )}
+              />
+            </Grid>
+
+            <Grid align="center" item xs={12} sm={2} style={{ margin: 'auto 0' }}>
+              <Button type="submit" className="save">
                 <Save />
                 Salvar
               </Button>

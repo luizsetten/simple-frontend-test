@@ -52,11 +52,20 @@ const saveUser = asyncFlow({
     const id = yield select((state) => state.user.id);
     return { id, ...payload };
   },
-  api: ({ id, ...values }) => request({
-    url: `/person/${id}`,
-    method: 'put',
-    body: values,
-  }),
+  api: ({ id, ...values }) => {
+    if (id === -1) {
+      return request({
+        url: '/person',
+        method: 'post',
+        body: values,
+      });
+    }
+    return request({
+      url: `/person/${id}`,
+      method: 'put',
+      body: values,
+    });
+  },
   * postSuccess() {
     yield put(routeActions.redirectTo(routes.HOME));
   },
