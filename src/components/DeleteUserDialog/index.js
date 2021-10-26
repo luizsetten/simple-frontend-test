@@ -11,6 +11,11 @@ export function DeleteUserDialog({ open, setOpen, handleDelete }) {
     setOpen(false);
   };
 
+  const handleAccept = () => {
+    handleDelete();
+    handleClose();
+  };
+
   return (
     <div>
       <Dialog
@@ -30,7 +35,7 @@ export function DeleteUserDialog({ open, setOpen, handleDelete }) {
           <Button onClick={handleClose} color="primary">
             Cancelar
           </Button>
-          <Button onClick={handleDelete} color="primary" autoFocus>
+          <Button onClick={handleAccept} color="primary" autoFocus>
             Apagar
           </Button>
         </DialogActions>
